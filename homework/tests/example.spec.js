@@ -29,6 +29,7 @@ data.forEach(version => {
 
   // Clear button functionality
   test.describe(version + ': Clear button', () => {
+
     // Clearing the answer field
     test('Pressing Clear button should clear the answer field', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
@@ -52,6 +53,7 @@ data.forEach(version => {
 
   // Integer checkbox
   test.describe(version + ': Integers Only checkbox and description', () => {
+
     // Choosing Concatinate option should make Integers Only checkbox and description disappear 
       test('Choosing Concatenate operation should hide Integers Only checkbox and description', async ({ page }) => {
         let calculatorPage = new CalculatorPage(page);
@@ -86,6 +88,7 @@ data.forEach(version => {
 
   // Concatenate functionality
   test.describe(version + ': Concatenate', () => {
+
     // Concatenating strings
     test('Concatenating a and b should result in ab', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
@@ -111,7 +114,6 @@ data.forEach(version => {
 
   // Add functionality
   test.describe(version + ': Add', () => {
-    // Adding integers
     test('Adding 3 and 4 should result in 7', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
@@ -151,6 +153,7 @@ data.forEach(version => {
 
   // Division functionality
   test.describe(version + ': Divide', () => {
+
     // Basic division
     test('Dividing 5 and 2 should result in 2.5', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
