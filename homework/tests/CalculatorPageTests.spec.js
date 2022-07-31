@@ -17,7 +17,6 @@ const data = [
 
 data.forEach(version => {
 
-    // Calculate button visibility
     test.describe(version + ': Calculate button', () => {
       test('Calculate button should always be enabled', async ({ page }) => {
         let calculatorPage = new CalculatorPage(page);
@@ -27,10 +26,8 @@ data.forEach(version => {
       });
     });
 
-  // Clear button functionality
   test.describe(version + ': Clear button', () => {
 
-    // Clearing the answer field
     test('Pressing Clear button should clear the answer field', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
@@ -42,7 +39,6 @@ data.forEach(version => {
       await expect(page.locator('#numberAnswerField'), 'Answer field should be cleared').toBeEmpty();
     });
 
-    // Clear button visibility
     test('Clear button should always be enabled', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
@@ -51,10 +47,9 @@ data.forEach(version => {
     });
   });
 
-  // Integer checkbox
+
   test.describe(version + ': Integers Only checkbox and description', () => {
 
-    // Choosing Concatinate option should make Integers Only checkbox and description disappear 
       test('Choosing Concatenate operation should hide Integers Only checkbox and description', async ({ page }) => {
         let calculatorPage = new CalculatorPage(page);
         await calculatorPage.navigate();
@@ -63,7 +58,6 @@ data.forEach(version => {
         await expect(page.locator(('label[id=intSelectionLabel]') && ('input[id=integerSelect]') ), 'Integers checkbox is still enabled').toBeHidden();
       });
 
-      // Integer Only checkbox should be enabled to all options except Concatenate
       test('Integers Only field should be enabled except for Concatenate operation', async ({ page }) => {
         let calculatorPage = new CalculatorPage(page);
         await calculatorPage.navigate();
@@ -73,7 +67,6 @@ data.forEach(version => {
       });
     });
 
-  // Error message appearance when adding a string to an integer or a float
   test.describe(version + ': Error message', () => {
     test('Adding not an integer or a float should display an error message except for Concatanate opreation', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
@@ -86,10 +79,8 @@ data.forEach(version => {
     });
   });
 
-  // Concatenate functionality
   test.describe(version + ': Concatenate', () => {
 
-    // Concatenating strings
     test('Concatenating a and b should result in ab', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
@@ -100,7 +91,6 @@ data.forEach(version => {
       await expect(page.locator('#numberAnswerField'), 'Incorrect answer. It should be "ab"').toHaveValue('ab');
     });
 
-    // Concatenating integers
     test('Concatenating 3 and 4 should result in 34', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
@@ -112,7 +102,6 @@ data.forEach(version => {
     });
   });
 
-  // Add functionality
   test.describe(version + ': Add', () => {
     test('Adding 3 and 4 should result in 7', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
@@ -125,7 +114,6 @@ data.forEach(version => {
     });
   });
 
-  // Subtract functionality
   test.describe(version + ': Subtract', () => {
     test('Subtracting 5 and 2 should result in 3', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
@@ -138,7 +126,6 @@ data.forEach(version => {
     });
   });
 
-  // Multiply functionality
   test.describe(version + ': Multiply', () => {
     test('Multiplying 5 and 2 should result in 10', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
@@ -151,10 +138,8 @@ data.forEach(version => {
     });
   });
 
-  // Division functionality
   test.describe(version + ': Divide', () => {
 
-    // Basic division
     test('Dividing 5 and 2 should result in 2.5', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
@@ -165,7 +150,6 @@ data.forEach(version => {
       await expect(page.locator('#numberAnswerField'), 'The answer is incorrect. It should be 2.5').toHaveValue('2.5');
     });
 
-    // Division by zero
     test('Division by zero should not be allowed and should display an error message', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
