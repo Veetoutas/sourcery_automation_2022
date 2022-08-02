@@ -47,107 +47,67 @@ data.forEach(version => {
     });
   });
 
-
-  test.describe(version + ': Integers Only checkbox and description', () => {
+  test.describe(version + ': Integers Only checkbox and label', () => {
 
       test('Choosing Concatenate operation should hide Integers Only checkbox and description', async ({ page }) => {
         let calculatorPage = new CalculatorPage(page);
         await calculatorPage.navigate();
         await calculatorPage.versionSelect(version);
         await calculatorPage.selectOperation('Concatenate');
-        await expect(page.locator(('label[id=intSelectionLabel]') && ('input[id=integerSelect]') ), 'Integers checkbox is still enabled').toBeHidden();
+        await expect.soft(page.locator('label[id=intSelectionLabel]'), 'Label of Integers checkbox is still enabled').toBeHidden();
+        await expect.soft(page.locator('input[id=integerSelect]'), 'Integers checkbox is still enabled').toBeHidden();
+        expect(test.info().errors).toHaveLength(0);
       });
 
-      test('Integers Only field should be enabled except for Concatenate operation', async ({ page }) => {
+      test('All operations except Concatenate should always have "Integers Only" field enabled', async ({ page }) => {
         let calculatorPage = new CalculatorPage(page);
         await calculatorPage.navigate();
         await calculatorPage.versionSelect(version);
-        await calculatorPage.selectOperation('Add');
-        await expect(page.locator(('label[id=intSelectionLabel]') && ('input[id=integerSelect]') ), 'Integers Only checkbox and description is disabled').toBeEnabled();
+        await calculatorPage.checkIntegerFieldsToBeEnabled()
       });
     });
 
   test.describe(version + ': Error message', () => {
-    test('Adding not an integer or a float should display an error message except for Concatanate opreation', async ({ page }) => {
+    test('All operations with a string (except Concatenate) should not be allowed and display an error message', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
       await calculatorPage.navigate();
       await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('a', '4.2');
-      await calculatorPage.selectOperation('Add');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('label[id=errorMsgField]'), 'No error message displayed.').not.toBeEmpty();
+      await calculatorPage.checkIfErrorMessageIsDisplayed('a', '3.2', version)
     });
   });
 
   test.describe(version + ': Concatenate', () => {
-
-    test('Concatenating a and b should result in ab', async ({ page }) => {
+    test('Concatenating field values should connect them as a string', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
-      await calculatorPage.navigate();
-      await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('a', 'b');
-      await calculatorPage.selectOperation('Concatenate');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('#numberAnswerField'), 'Incorrect answer. It should be "ab"').toHaveValue('ab');
-    });
-
-    test('Concatenating 3 and 4 should result in 34', async ({ page }) => {
-      let calculatorPage = new CalculatorPage(page);
-      await calculatorPage.navigate();
-      await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('3', '4');
-      await calculatorPage.selectOperation('Concatenate');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('#numberAnswerField'), 'Incorrect answer. It should be "34"').toHaveValue('34');
+      await calculatorPage.doSelectedOperationWithProvidedValues('a', 'b', 'Concatenate', 'ab');
     });
   });
 
   test.describe(version + ': Add', () => {
-    test('Adding 3 and 4 should result in 7', async ({ page }) => {
+    test('Addition of integers should give us the right expected answer', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
-      await calculatorPage.navigate();
-      await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('3', '4');
-      await calculatorPage.selectOperation('Add');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('#numberAnswerField'), 'The answer is incorrect. It should be 7').toHaveValue('7');
+      await calculatorPage.doSelectedOperationWithProvidedValues('5', '2', 'Add', '7');
     });
   });
 
   test.describe(version + ': Subtract', () => {
-    test('Subtracting 5 and 2 should result in 3', async ({ page }) => {
+    test('Subtracting integers should give us the right expected answer', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
-      await calculatorPage.navigate();
-      await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('5', '2');
-      await calculatorPage.selectOperation('Subtract');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('#numberAnswerField'), 'The answer is incorrect. It should be 3').toHaveValue('3');
+      await calculatorPage.doSelectedOperationWithProvidedValues('5', '2', 'Subtract', '3');
     });
   });
 
   test.describe(version + ': Multiply', () => {
-    test('Multiplying 5 and 2 should result in 10', async ({ page }) => {
+    test('Multiplying integers should give us the right expected answer', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
-      await calculatorPage.navigate();
-      await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('5', '2');
-      await calculatorPage.selectOperation('Multiply');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('#numberAnswerField'), 'The answer is incorrect. It should be 10').toHaveValue('10');
+      await calculatorPage.doSelectedOperationWithProvidedValues('5', '2', 'Multiply', '10');
     });
   });
 
   test.describe(version + ': Divide', () => {
-
-    test('Dividing 5 and 2 should result in 2.5', async ({ page }) => {
+    test('Dividing integers should give us the right expected answer', async ({ page }) => {
       let calculatorPage = new CalculatorPage(page);
-      await calculatorPage.navigate();
-      await calculatorPage.versionSelect(version);
-      await calculatorPage.fillNumberFields('5', '2');
-      await calculatorPage.selectOperation('Divide');
-      await calculatorPage.calculateResult();
-      await expect(page.locator('#numberAnswerField'), 'The answer is incorrect. It should be 2.5').toHaveValue('2.5');
+      await calculatorPage.doSelectedOperationWithProvidedValues('5', '2', 'Divide', '2.5');
     });
 
     test('Division by zero should not be allowed and should display an error message', async ({ page }) => {
